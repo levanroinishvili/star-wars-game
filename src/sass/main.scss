@@ -1,0 +1,56 @@
+
+button {
+  padding:10px;
+  margin:10px;
+}
+button#restart {float:right;color:white;background-color:red;}
+button#restart.bright {color:red;background-color:yellow;}
+.command {
+  display:inline-block;
+}
+.battlefield {
+  text-align: center;
+  overflow:hidden;
+}
+
+
+/* =========================== BEGIN : Troop =========================== */
+.troop {
+	display:inline-block;
+  position:relative;
+	width:120px;
+	margin:10px;
+}
+.troop.smooth {transition: top .5s, left .5s;}
+.troop.killed {
+  background-color:#900;
+  opacity:.2;
+}
+.troop:not(.killed) {cursor:pointer;}
+.troop .healthbox {
+	position:relative;
+  transition: background-color .5s;
+}
+.troop:not(.killed) .healthbox {border:1px solid #ccc;}
+.troop .healthbox .health {
+	height:15px; width:100%;
+	background-color:#42CEF4;
+	transition: width 1s, background-color .5s;
+}
+.troop.hit .healthbox {background-color:red;}
+.troop.hit .healthbox .health {background-color:yellow;}
+.troop .healthpoints {
+	position:absolute;
+	top:0;left:0;right:0;
+	text-align:center;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:14px;
+	color:black;
+}
+.troop .avatar {
+	display:block;
+	margin:5px auto 0 auto;
+	max-width:100px;
+	max-height:100px;
+}
+/* =========================== E N D : Troop =========================== */
