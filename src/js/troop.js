@@ -44,10 +44,11 @@ var troop = function () {
     trp.appendChild(healthbox);
     trp.appendChild(avatar);
 
-    trp.style.left = (Math.random() < .5 ? '-' : '') + '5000px';
-    trp.style.top = (Math.random() < .5 ? '-' : '') + '5000px';
+    trp.style.left = (Math.random() < 0.5 ? '-' : '') + '5000px';
+    trp.style.top = (Math.random() < 0.5 ? '-' : '') + '5000px';
     DOMparent.appendChild(trp);
-    trp.clientWidth;trp.classList.add('smooth');
+    var ignore = trp.clientWidth;
+    trp.classList.add('smooth');
     trp.style.left = '0';trp.style.top = '0';
     // Animate entrance
     this.DOM = trp;

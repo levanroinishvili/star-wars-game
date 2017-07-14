@@ -30,6 +30,10 @@ function flashRestart2() {
 window.flashRestartStart = flashRestartStart;
 window.flashRestartStop = flashRestartStop;
 
-var starWars = new _game2.default();
-starWars.start();
-window.starWars = starWars;
+function startGame() {
+  var starWars = new _game2.default();
+  starWars.start();
+  window.starWars = starWars;
+}
+
+if (document.getElementById('dronetrooper_barracks')) startGame();else window.onload = startGame;

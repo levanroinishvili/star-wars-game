@@ -1,15 +1,16 @@
-const gulp			= require('gulp');
-const browserSync	= require('browser-sync').create();
-const babel			= require('gulp-babel');
-const jshint		= require('gulp-jshint');
-const sass			= require('gulp-sass');
-const del			= require('del');
-const builder		= require('systemjs-builder');
-const concat		= require('gulp-concat');
-const uglify		= require('gulp-uglify');
+const gulp				= require('gulp');
+const browserSync	= require('browser-sync');//.create();
+//const php					= require('gulp-connect-php7');
+const babel				= require('gulp-babel');
+const jshint			= require('gulp-jshint');
+const sass				= require('gulp-sass');
+const del					= require('del');
+const builder			= require('systemjs-builder');
+const concat			= require('gulp-concat');
+const uglify			= require('gulp-uglify');
+const print				= require('gulp-print');
 const processhtml	= require('gulp-processhtml');
-const print			= require('gulp-print');
-const chalk			= require('chalk');
+const chalk				= require('chalk');
 
 const es6_glob		= 'src/js-es6/**/*.js';		// Glob to match es6 JavaScript files
 const dev_es5_dest	= 'src/js';					// Where to output transpiled JavaScript during development
@@ -59,19 +60,20 @@ function transpile() {
 		dev_sass_transpile_all()
 	]);
 }
-
 gulp.task('transpile',transpile);
 
 
 gulp.task('serve', ['transpile'], done => {
-	browserSync.init({
-		server: {
-			baseDir: 'src',
-			routes: {
-				'/node_modules':'node_modules'
+
+		browserSync.init({
+			server: {
+				proxy: '127.0.0.1:8000',
+				baseDir: 'src',
+				routes: {
+					'/node_modules':'node_modules'
+				}
 			}
-		}
-	},done);
+		},done);
 });
 
 // Default action: for development
@@ -101,8 +103,10 @@ gulp.task('develop',['serve'],function() {
 		}
 	});
 
-	gulp.watch('src/css/**/*.css',		browserSync.reload);
-	gulp.watch('src/**/*.html',			browserSync.reload);
+	gulp.watch('src/css/**/*.css',			browserSync.reload);
+	gulp.watch('src/**/*.html',					browserSync.reload);
+	//gulp.watch('src/**/*.php', 					browserSync.reload);
+	gulp.watch('src/images/**/*',				browserSync.reload);
 	gulp.watch(dev_es5_dest+'/**/*.js',	browserSync.reload);
 });
 
@@ -112,8 +116,8 @@ gulp.task('develop',['serve'],function() {
 function jsbundle() {
 	const jsBuilder = new builder('src','src/js-es6/systemjs.config.js');
 	transpile().then( () => jsBuilder.buildStatic(app_entry_js, app_out_js, {
-        minify: true,
-        mangle: true
+        minify: false,
+        mangle: false
     }));
 }
 gulp.task('jsbundle',jsbundle);
@@ -133,6 +137,15 @@ function copy_css() {
 }
 gulp.task('copy:css',copy_css);
 
+function copy_images() {
+	return new Promise( (resolve,reject) => {
+		gulp.src('src/images/**/*')
+			.pipe(gulp.dest('dist/images'))
+			.on('end', resolve)
+			.on('error',reject);
+	});
+}
+
 function copy_html() {
 	return new Promise ( (resolve,reject) => {
 		gulp.src('src/**/*.html')
@@ -151,7 +164,8 @@ function build() {
 			[
 				jsbundle(),
 				copy_css(),
-				copy_html()
+				copy_html(),
+				copy_images()
 			])
 	);
 }
@@ -173,7 +187,7 @@ function build_serve(done) {
 
 gulp.task('build:serve', build_serve);
 gulp.task('build:serve:watch', ['build:serve'], function() {
-	gulp.watch(['src/**','!src/js/**','!src/css/**'],function(event) {
+	gulp.watch(['src/**','!src/js/**','!src/css/**','src/images/**/*'],function(event) {
 		build().then( ignorePromiseArray => {
 			browserSync.reload();
 		}, console.log );

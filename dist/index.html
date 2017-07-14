@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Starwars Game</title>
+
+	<script src="/js/main.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="/css/main.css">
+</head>
+<body>
+
+	<h1>Star Wars Game</h1>
+	<button type="button" onclick="starWars.hitRandom()">Hit Random Troop</button>
+	<div class="command">To hit a specific troop, click that troop</div>
+	<button type="button" onclick="starWars.start()" id="restart">Restart Game</button>
+	<div class="battlefield">
+		<div id="DarthVader_barracks"></div>
+		<div id="stormtrooper_barracks"></div>
+		<div id="dronetrooper_barracks"></div>
+	</div>
+</body>
+</html>
